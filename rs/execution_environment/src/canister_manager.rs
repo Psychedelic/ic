@@ -366,6 +366,7 @@ impl CanisterManager {
                     validate_settings,
                     max_number_of_canisters,
                     state,
+                    None,
                 ) {
                     Ok(canister_id) => canister_id,
                     Err(err) => return (Err(err), cycles),
@@ -1086,9 +1087,14 @@ impl CanisterManager {
         state: &mut ReplicatedState,
         provisional_whitelist: &ProvisionalWhitelist,
         max_number_of_canisters: u64,
+        canister_id: Option<CanisterId>,
     ) -> Result<CanisterId, CanisterManagerError> {
         if !provisional_whitelist.contains(&sender) {
             return Err(CanisterManagerError::SenderNotInWhitelist(sender));
+        }
+
+        if let Some(canister_id) = &canister_id {
+            self.validate_canister_id_available(state, canister_id)?;
         }
 
         let cycles = match cycles_amount {
@@ -1111,6 +1117,7 @@ impl CanisterManager {
                 validated_settings,
                 max_number_of_canisters,
                 state,
+                canister_id,
             ),
         }
     }
@@ -1123,6 +1130,7 @@ impl CanisterManager {
         settings: ValidatedCanisterSettings,
         max_number_of_canisters: u64,
         state: &mut ReplicatedState,
+        canister_id: Option<CanisterId>,
     ) -> Result<CanisterId, CanisterManagerError> {
         if max_number_of_canisters > 0 && state.num_canisters() as u64 >= max_number_of_canisters {
             return Err(CanisterManagerError::MaxNumberOfCanistersReached {
@@ -1131,8 +1139,11 @@ impl CanisterManager {
             });
         }
 
-        let new_canister_id = self.generate_new_canister_id(state)?;
-        self.validate_canister_id_available(state, &new_canister_id)?;
+        let new_canister_id = match canister_id {
+            Some(canister_id) => canister_id,
+            None => self.generate_new_canister_id(state)?,
+        };
+        self.validate_canister_id_available(&state, &new_canister_id)?;
 
         // Take the fee out of the cycles that are going to be added as the canister's
         // initial balance.

@@ -560,6 +560,7 @@ impl SetupInitialDKGResponse {
 pub struct ProvisionalCreateCanisterWithCyclesArgs {
     pub amount: Option<candid::Nat>,
     pub settings: Option<CanisterSettingsArgs>,
+    pub canister_id: Option<PrincipalId>
 }
 
 impl ProvisionalCreateCanisterWithCyclesArgs {
@@ -567,6 +568,7 @@ impl ProvisionalCreateCanisterWithCyclesArgs {
         Self {
             amount: amount.map(candid::Nat::from),
             settings: None,
+            canister_id: None,
         }
     }
 

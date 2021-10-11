@@ -572,6 +572,9 @@ impl ExecutionEnvironment for ExecutionEnvironmentImpl {
                     Err(err) => Err(err.into()),
                     Ok(args) => {
                         let cycles_amount = args.to_u64();
+                        let canister_id = args
+                            .canister_id
+                            .map(|principal_id| CanisterId::new(principal_id).unwrap());
                         match CanisterSettings::try_from(args.settings) {
                             Ok(settings) => self
                                 .canister_manager
@@ -582,6 +585,7 @@ impl ExecutionEnvironment for ExecutionEnvironmentImpl {
                                     &mut state,
                                     provisional_whitelist,
                                     max_number_of_canisters,
+                                    canister_id,
                                 )
                                 .map(|canister_id| CanisterIdRecord::from(canister_id).encode())
                                 .map_err(|err| err.into()),
