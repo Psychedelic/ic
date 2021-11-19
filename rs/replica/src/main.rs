@@ -23,8 +23,10 @@ use std::path::PathBuf;
 use std::str::FromStr;
 use std::sync::Arc;
 use std::time::Duration;
-use tokio::signal::unix::{signal, SignalKind};
 use tokio::task;
+
+#[cfg(unix)]
+use tokio::signal::unix::{signal, SignalKind};
 
 #[cfg(target_os = "linux")]
 mod jemalloc_metrics;
@@ -130,6 +132,7 @@ async fn run() -> io::Result<()> {
     // And SO_NOSIGPIPE is kernel dependent (>2.2) and has spotty
     // support. (And thus both options lead to sporadic problems
     // commonly if we simply depend on them.)
+    #[cfg(unix)]
     let _sigpipe_handler =
         signal(SignalKind::pipe()).expect("failed to install SIGPIPE signal handler");
 

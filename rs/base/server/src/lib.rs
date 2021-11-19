@@ -3,6 +3,7 @@ use slog::{info, Logger};
 /// Returns a `Future` that completes when the service should gracefully
 /// shutdown. Completion happens if either of `SIGINT` or `SIGTERM` are
 /// received.
+#[cfg(unix)]
 pub async fn shutdown_signal(log: Logger) {
     use tokio::signal::unix::{signal, SignalKind};
     let mut sig_int =
@@ -18,4 +19,11 @@ pub async fn shutdown_signal(log: Logger) {
             info!(log, "Caught SIGTERM");
         }
     }
+}
+
+#[cfg(windows)]
+pub async fn shutdown_signal(log: Logger) {
+    use tokio::signal::windows::{ctrl_c, CtrlC};
+    let mut sig_ctrl_c = ctrl_c().expect("failed to install CtrlC signal handler");
+    sig_ctrl_c.recv().await;
 }
