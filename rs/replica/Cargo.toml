@@ -37,8 +37,6 @@ ic-sys = { path = "../sys" }
 ic-transport = { path = "../transport" }
 ic-types = { path = "../types/types" }
 ic-utils = { path = "../utils" }
-jemallocator = "0.3.2"
-jemalloc-ctl = "0.3.3"
 json5 = "0.2.7"
 libc = "0.2.91"
 nix = "0.23.0"
@@ -59,6 +57,10 @@ thread_profiler = { version = "0.3", optional = true }
 tokio = { version = "1.9.0", features = ["full"] }
 tracing = "0.1.13"
 tower = { version = "0.4.8", features = ["util"] }
+
+[target.'cfg(target_os = "linux")'.dependencies]
+jemallocator = "0.3.2"
+jemalloc-ctl = "0.3.3"
 
 [dev-dependencies]
 assert_cmd = "0.12"
