@@ -4140,7 +4140,9 @@ dependencies = [
  "ic-crypto-sha",
  "lazy_static",
  "libc",
+ "memmap",
  "nix",
+ "page_size",
  "phantom_newtype",
  "tempfile",
  "wsl",
@@ -5629,6 +5631,16 @@ dependencies = [
  "ecdsa",
  "elliptic-curve",
  "sha2 0.9.3",
+]
+
+[[package]]
+name = "page_size"
+version = "0.4.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "eebde548fbbf1ea81a99b128872779c437752fb99f217c45245e1a61dcd9edcd"
+dependencies = [
+ "libc",
+ "winapi 0.3.9",
 ]
 
 [[package]]

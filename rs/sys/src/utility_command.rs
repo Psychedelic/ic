@@ -1,5 +1,4 @@
 use std::io::Write;
-use std::os::unix::fs::PermissionsExt;
 use std::process::{Command as StdCommand, ExitStatus, Stdio};
 
 const VSOCK_AGENT_PATH: &str = "/opt/ic/bin/vsock_agent";
@@ -141,7 +140,9 @@ impl UtilityCommand {
 
     /// Try to attach the USB HSM, if the VSOCK_AGENT_PATH binary
     /// exists. Ignore any errors in the execution.
+    #[cfg(unix)]
     pub fn try_to_attach_hsm() {
+        use std::os::unix::fs::PermissionsExt;
         if let Ok(metadata) = std::fs::metadata(VSOCK_AGENT_PATH) {
             let permissions = metadata.permissions();
             if permissions.mode() & 0o111 != 0 {
@@ -163,7 +164,9 @@ impl UtilityCommand {
 
     /// Try to detach the USB HSM, if the VSOCK_AGENT_PATH binary
     /// exists. Ignore any errors in the execution.
+    #[cfg(unix)]
     pub fn try_to_detach_hsm() {
+        use std::os::unix::fs::PermissionsExt;
         if let Ok(metadata) = std::fs::metadata(VSOCK_AGENT_PATH) {
             let permissions = metadata.permissions();
             if permissions.mode() & 0o111 != 0 {
@@ -176,6 +179,12 @@ impl UtilityCommand {
             }
         }
     }
+
+    #[cfg(windows)]
+    pub fn try_to_attach_hsm() {}
+
+    #[cfg(windows)]
+    pub fn try_to_detach_hsm() {}
 }
 
 impl std::fmt::Display for UtilityCommand {
