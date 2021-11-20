@@ -4865,7 +4865,7 @@ checksum = "8dd5a6d5999d9907cda8ed67bbd137d3af8085216c2ac62de5be860bd41f304a"
 [[package]]
 name = "lmdb-rkv"
 version = "0.14.99"
-source = "git+https://github.com/dfinity-lab/lmdb-rs?rev=1cf86b5cc09947e94a787065cadd163a42ef7f18#1cf86b5cc09947e94a787065cadd163a42ef7f18"
+source = "git+https://github.com/psychedelic/lmdb-rs?rev=3625787a1205379080869221a05583111c90164c#3625787a1205379080869221a05583111c90164c"
 dependencies = [
  "bitflags",
  "byteorder",
@@ -4876,7 +4876,7 @@ dependencies = [
 [[package]]
 name = "lmdb-rkv-sys"
 version = "0.11.99"
-source = "git+https://github.com/dfinity-lab/lmdb-rs?rev=1cf86b5cc09947e94a787065cadd163a42ef7f18#1cf86b5cc09947e94a787065cadd163a42ef7f18"
+source = "git+https://github.com/psychedelic/lmdb-rs?rev=3625787a1205379080869221a05583111c90164c#3625787a1205379080869221a05583111c90164c"
 dependencies = [
  "bindgen 0.53.3",
  "cc",
