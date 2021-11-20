@@ -19,7 +19,6 @@ ic-crypto-tree-hash = { path = "../crypto/tree_hash" }
 ic-interfaces = { path = "../interfaces" }
 ic-logger = { path = "../monitoring/logger" }
 ic-metrics = { path = "../monitoring/metrics" }
-ic-pprof = { path = "../monitoring/pprof" }
 ic-registry-client = { path = "../registry/client" }
 ic-registry-provisional-whitelist = { path = "../registry/provisional_whitelist" }
 ic-registry-subnet-type = { path = "../registry/subnet_type" }
@@ -40,6 +39,9 @@ tokio = { version = "1.9.0", features = [ "full" ] }
 tower =  { version = "0.4.8", features = ["load-shed", "limit"] }
 tower-util = "0.3.1"
 url = "2.1.1"
+
+[target.'cfg(unix)'.dependencies]
+ic-pprof = { path = "../monitoring/pprof" }
 
 [dev-dependencies]
 bytes = "1.0.1"

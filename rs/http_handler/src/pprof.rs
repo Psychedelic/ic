@@ -6,8 +6,24 @@ use crate::{
 };
 use http::{header, request::Parts};
 use hyper::{self, Body, Response, StatusCode};
-use ic_pprof::{flamegraph, profile, Error};
 use ic_types::canonical_error::{internal_error, invalid_argument_error, CanonicalError};
+
+#[cfg(windows)]
+mod ic_pprof {
+    use std::time::Duration;
+
+    pub type Error = String;
+
+    pub async fn flamegraph(_duration: Duration, _frequency: i32) -> Result<Vec<u8>, Error> {
+        Err("pprof not supported on windows".into())
+    }
+
+    pub async fn profile(_duration: Duration, _frequency: i32) -> Result<Vec<u8>, Error> {
+        Err("pprof not supported on windows".into())
+    }
+}
+
+use ic_pprof::{flamegraph, profile, Error};
 
 pub const CONTENT_TYPE_SVG: &str = "image/svg+xml";
 /// Default CPU profile duration.
